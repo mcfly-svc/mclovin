@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"encoding/json"
 	"io/ioutil"
+	"strconv"
 
 	"github.com/mikec/marsupi-api/models"
 	"github.com/chrismrivera/cmd"
@@ -11,7 +12,9 @@ import (
 
 func init() {
 	cmdr.AddCommand(getProjects)
+	cmdr.AddCommand(getProject)
 	cmdr.AddCommand(addProject)
+	cmdr.AddCommand(deleteProject)
 }
 
 var getProjects = cmd.NewCommand(
@@ -27,6 +30,36 @@ var getProjects = cmd.NewCommand(
 		}
 
 		b, err := json.Marshal(projects)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(b))
+
+		return nil
+	},
+
+)
+
+var getProject = cmd.NewCommand(
+
+	"get-project", "Projects", "Gets a project by ID",
+
+	func(cmd *cmd.Command) {
+		cmd.AppendArg("id", "Project ID")
+	}, 
+
+	func(cmd *cmd.Command) error {
+		id, err := strconv.ParseInt(cmd.Arg("id"), 10, 64)
+		if err != nil {
+			return err
+		}
+
+		project, _, err := api.GetProject(id)
+		if err != nil {
+			return err
+		}
+
+		b, err := json.Marshal(project)
 		if err != nil {
 			return err
 		}
@@ -74,3 +107,32 @@ var addProject = cmd.NewCommand(
 	},
 
 )
+
+var deleteProject = cmd.NewCommand(
+	"delete-project", "Projects", "Deletes a project",
+
+	func(cmd *cmd.Command) {
+		cmd.AppendArg("id", "Project ID")
+	},
+
+	func(cmd *cmd.Command) error {
+		id, err := strconv.ParseInt(cmd.Arg("id"), 10, 64)
+		if err != nil {
+			return err
+		}
+
+		res, err := api.DeleteProject(id)
+		if err != nil {
+			return err
+		}
+
+		bBytes, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(bBytes))
+
+		return nil
+	},
+)
+
