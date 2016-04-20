@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
-	"io/ioutil"
 	"strconv"
 
 	"github.com/mikec/marsupi-api/models"
@@ -24,16 +22,12 @@ var getProjects = cmd.NewCommand(
 	func(cmd *cmd.Command) { }, 
 
 	func(cmd *cmd.Command) error {
-		projects, _, err := api.GetProjects()
+		res, err := apiClient.Projects.GetAll()
 		if err != nil {
 			return err
 		}
 
-		b, err := json.Marshal(projects)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(b))
+		outputResponse(res)
 
 		return nil
 	},
@@ -54,16 +48,12 @@ var getProject = cmd.NewCommand(
 			return err
 		}
 
-		project, _, err := api.GetProject(id)
+		res, err := apiClient.Projects.Get(id)
 		if err != nil {
 			return err
 		}
 
-		b, err := json.Marshal(project)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(b))
+		outputResponse(res)
 
 		return nil
 	},
@@ -92,16 +82,12 @@ var addProject = cmd.NewCommand(
 			return err
 		}
 
-		res, err := api.CreateProject(string(pBytes))
+		res, err := apiClient.Projects.Create(string(pBytes))
 		if err != nil {
 			return err
 		}
 
-		bBytes, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(bBytes))
+		outputResponse(res)
 
 		return nil
 	},
@@ -121,16 +107,12 @@ var deleteProject = cmd.NewCommand(
 			return err
 		}
 
-		res, err := api.DeleteProject(id)
+		res, err := apiClient.Projects.Delete(id)
 		if err != nil {
 			return err
 		}
 
-		bBytes, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(bBytes))
+		outputResponse(res)
 
 		return nil
 	},

@@ -1,14 +1,16 @@
 package main
 
 import (
-	"github.com/mikec/marsupi-api/apiutil"
+	"github.com/mikec/marsupi-api/client"
 	"github.com/chrismrivera/cmd"
 	"fmt"
+	"net/http"
+	"io/ioutil"
 	"os"
 )
 
 var cmdr *cmd.App = cmd.NewApp()
-var api = apiutil.ApiUtil{"http://localhost:8080"}
+var apiClient = client.NewClient("http://localhost:8080")
 
 func main() {
 	cmdr.Description = "A command line client for the marsupi API"
@@ -20,4 +22,14 @@ func main() {
 		}
 		os.Exit(1)
 	}
+}
+
+func outputResponse(res *http.Response) {
+	defer res.Body.Close()
+	contents, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Printf("%s\n", err)
+		os.Exit(1)
+	}
+	fmt.Printf("%s\n", string(contents))
 }
