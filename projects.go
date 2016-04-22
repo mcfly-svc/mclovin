@@ -22,7 +22,7 @@ var getProjects = cmd.NewCommand(
 	func(cmd *cmd.Command) { }, 
 
 	func(cmd *cmd.Command) error {
-		res, err := apiClient.Projects.GetAll()
+		res, err := clt.Projects.GetAll()
 		if err != nil {
 			return err
 		}
@@ -48,7 +48,7 @@ var getProject = cmd.NewCommand(
 			return err
 		}
 
-		res, err := apiClient.Projects.Get(id)
+		res, err := clt.Projects.Get(id)
 		if err != nil {
 			return err
 		}
@@ -82,7 +82,7 @@ var addProject = cmd.NewCommand(
 			return err
 		}
 
-		res, err := apiClient.Projects.Create(string(pBytes))
+		res, err := clt.Projects.Create(string(pBytes))
 		if err != nil {
 			return err
 		}
@@ -107,7 +107,7 @@ var deleteProject = cmd.NewCommand(
 			return err
 		}
 
-		res, err := apiClient.Projects.Delete(id)
+		res, err := clt.Projects.Delete(id)
 		if err != nil {
 			return err
 		}
