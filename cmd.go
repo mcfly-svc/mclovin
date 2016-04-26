@@ -35,8 +35,10 @@ func outputResponse(cr *client.ClientResponse, res *http.Response) {
 	}
 
 	fmt.Println()
-	fmt.Printf("StatusCode:          %d\n", cr.StatusCode)
-	fmt.Printf("Data:                %s\n", fmt.Sprintf("%+v", cr.Data))
+	if cr != nil {
+		fmt.Printf("StatusCode:          %d\n", cr.StatusCode)
+		fmt.Printf("Data:                %s\n", fmt.Sprintf("%+v", cr.Data))
+	}
 	fmt.Printf("Body:                %s\n", string(body))
 	fmt.Println()
 }
