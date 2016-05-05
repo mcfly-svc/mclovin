@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/mikec/marsupi-api/models"
+	"github.com/mikec/msplapi/models"
 )
 
 func init() {
@@ -27,7 +27,7 @@ var deleteProject = NewDeleteCommand(
 )
 
 var addProject = NewAddCommand(
-	CommandProperties{"add-project","Projects","Adds a new project"},
+	CommandProperties{"add-project", "Projects", "Adds a new project"},
 	&clt.Projects,
 	models.Project{},
 	AddCommandArg{"name", "Name", "Project name"},

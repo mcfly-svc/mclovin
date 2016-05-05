@@ -1,16 +1,16 @@
 package main
 
 import (
-	"strconv"
-	"reflect"
 	"encoding/json"
+	"reflect"
+	"strconv"
 
-	"github.com/mikec/marsupi-api/client"
 	"github.com/chrismrivera/cmd"
+	"github.com/mikec/msplapi/client"
 )
 
 type CommandProperties struct {
-	Name 	string
+	Name  string
 	Group string
 	Desc  string
 }
@@ -46,8 +46,8 @@ func NewGetAllCommand(props CommandProperties, e *client.EntityEndpoint) *cmd.Co
 	return cmd.NewCommand(
 
 		props.Name, props.Group, props.Desc,
-	
-		func(cmd *cmd.Command) { }, 
+
+		func(cmd *cmd.Command) {},
 
 		func(cmd *cmd.Command) error {
 			cr, res, err := e.GetAll()
@@ -59,7 +59,6 @@ func NewGetAllCommand(props CommandProperties, e *client.EntityEndpoint) *cmd.Co
 
 			return nil
 		},
-
 	)
 }
 
@@ -91,9 +90,9 @@ func NewDeleteCommand(props CommandProperties, e *client.EntityEndpoint) *cmd.Co
 }
 
 type AddCommandArg struct {
-	ArgName 		string
-	FieldName 	string
-	ArgDesc 		string
+	ArgName   string
+	FieldName string
+	ArgDesc   string
 }
 
 func NewAddCommand(props CommandProperties, e *client.EntityEndpoint, model interface{}, args ...AddCommandArg) *cmd.Command {
@@ -105,7 +104,7 @@ func NewAddCommand(props CommandProperties, e *client.EntityEndpoint, model inte
 			for _, val := range args {
 				cmd.AppendArg(val.ArgName, val.ArgDesc)
 			}
-		}, 
+		},
 
 		func(cmd *cmd.Command) error {
 			m := reflect.New(reflect.TypeOf(model)).Elem()
@@ -127,6 +126,5 @@ func NewAddCommand(props CommandProperties, e *client.EntityEndpoint, model inte
 
 			return nil
 		},
-
 	)
 }
