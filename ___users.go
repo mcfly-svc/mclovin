@@ -1,6 +1,6 @@
 package main
 
-type CreateUserReq struct {
+/*type CreateUserReq struct {
 	GitHubToken 				string				`json:"github_token"`
 	// BitbucketToken 	string				`json:"bitbucket_token"`
 	// DropboxToken			string				`json:"dropbox_token"`
@@ -13,12 +13,12 @@ func init() {
 }
 
 var getUser = NewGetCommand(
-	CommandProperties{"get-user", "Users", "Gets a user by ID"}, 
+	CommandProperties{"get-user", "Users", "Gets a user by ID"},
 	&clt.Users,
 )
 
 var deleteUser = NewDeleteCommand(
-	CommandProperties{"delete-user", "Users", "Deletes a user"}, 
+	CommandProperties{"delete-user", "Users", "Deletes a user"},
 	&clt.Users,
 )
 
@@ -28,3 +28,4 @@ var addUser = NewAddCommand(
 	CreateUserReq{},
 	AddCommandArg{"github_token", "GitHubToken", "The User's github auth token"},
 )
+*/

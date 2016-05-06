@@ -1,20 +1,12 @@
 package main
 
-import (
-	"encoding/json"
-	"reflect"
-	"strconv"
-
-	"github.com/chrismrivera/cmd"
-	"github.com/mikec/msplapi/client"
-)
-
 type CommandProperties struct {
 	Name  string
 	Group string
 	Desc  string
 }
 
+/*
 func NewGetCommand(props CommandProperties, e *client.EntityEndpoint) *cmd.Command {
 	return cmd.NewCommand(
 
@@ -128,3 +120,4 @@ func NewAddCommand(props CommandProperties, e *client.EntityEndpoint, model inte
 		},
 	)
 }
+*/

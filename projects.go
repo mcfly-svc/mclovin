@@ -1,36 +1,39 @@
 package main
 
 import (
-	"github.com/mikec/msplapi/models"
+	"fmt"
+
+	"github.com/chrismrivera/cmd"
+	"github.com/mikec/msplapi/client"
 )
 
 func init() {
-	cmdr.AddCommand(getProjects)
-	cmdr.AddCommand(getProject)
 	cmdr.AddCommand(addProject)
-	cmdr.AddCommand(deleteProject)
 }
 
-var getProjects = NewGetAllCommand(
-	CommandProperties{"get-projects", "Projects", "Gets all projects"},
-	&clt.Projects,
-)
+var addProject = NewAuthCommand(
 
-var getProject = NewGetCommand(
-	CommandProperties{"get-project", "Projects", "Gets a project by ID"},
-	&clt.Projects,
-)
+	"add-project", "Projects", "Add a new project",
 
-var deleteProject = NewDeleteCommand(
-	CommandProperties{"delete-project", "Projects", "Deletes a project"},
-	&clt.Projects,
-)
+	func(cmd *cmd.Command) {
+		cmd.AppendArg("project-name", `Name of the project to add. 
+																		Must match the name of the project on the 
+																		given provider`)
+		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
+	},
 
-var addProject = NewAddCommand(
-	CommandProperties{"add-project", "Projects", "Adds a new project"},
-	&clt.Projects,
-	models.Project{},
-	AddCommandArg{"name", "Name", "Project name"},
-	AddCommandArg{"username", "Username", "Project owner user name"},
-	AddCommandArg{"service", "Service", "Service where the project lives [ github | bitbucket(unsupported) ]"},
+	func(cmd *cmd.Command, clt *client.Client) error {
+
+		/*cr, res, err := clt.Login(cmd.Arg("project-name"), cmd.Arg("provider"))
+		if err != nil {
+			log.Fatal(err)
+			return err
+		}
+
+		outputResponse(cr, res)*/
+
+		fmt.Println("TOKEN:", clt.Context.AccessToken)
+
+		return nil
+	},
 )

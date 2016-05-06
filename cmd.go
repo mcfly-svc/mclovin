@@ -3,6 +3,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -13,7 +14,11 @@ import (
 )
 
 var cmdr *cmd.App = cmd.NewApp()
-var clt = client.NewClient("http://localhost:8081")
+var msplapiUrl = "http://localhost:8081"
+
+type AuthCommandRunFunc func(cmd *cmd.Command, ac *client.Client) error
+
+var ErrNoCredentials = errors.New("Please login first.")
 
 func main() {
 	cmdr.Description = "A command line client for the marsupi API"
@@ -25,6 +30,45 @@ func main() {
 		}
 		os.Exit(1)
 	}
+}
+
+func NewAuthCommand(name, group, desc string, setup cmd.SetupFunc, run AuthCommandRunFunc) *cmd.Command {
+	wrappingSetup := func(cmd *cmd.Command) {
+		setup(cmd)
+		cmd.AddFlag("token", "", "Override the authentication token")
+	}
+
+	wrappingRun := func(cmd *cmd.Command) error {
+		s, err := NewSimpleCredentialStore()
+		if err != nil {
+			return err
+		}
+
+		u, err := s.GetUserCreds()
+		if err != nil {
+			return err
+		}
+
+		overrideToken := cmd.Flag("token")
+
+		if u == nil {
+			if overrideToken != "" {
+				u = &UserCreds{}
+			} else {
+				return ErrNoCredentials
+			}
+		}
+
+		if overrideToken != "" {
+			u.Token = overrideToken
+		}
+
+		clt := client.NewClient(msplapiUrl, u.Token)
+
+		return run(cmd, clt)
+	}
+
+	return cmd.NewCommand(name, group, desc, wrappingSetup, wrappingRun)
 }
 
 func outputResponse(cr *client.ClientResponse, res *http.Response) {

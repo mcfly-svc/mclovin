@@ -4,29 +4,66 @@ import (
 	"log"
 
 	"github.com/chrismrivera/cmd"
+	"github.com/mikec/msplapi/api"
+	"github.com/mikec/msplapi/client"
 )
 
 func init() {
 	cmdr.AddCommand(login)
+	cmdr.AddCommand(logout)
 }
 
 var login = cmd.NewCommand(
 
-	"login", "Auth", "Login with github token",
+	"login", "Auth", "Login with a provider token",
 
 	func(cmd *cmd.Command) {
 		cmd.AppendArg("token", "Provider auth token")
-		cmd.AppendArg("token_type", "Provider (github, dropbox, ...)")
+		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
 
 	func(cmd *cmd.Command) error {
-		cr, res, err := clt.Login(cmd.Arg("token"), cmd.Arg("token_type"))
+		clt := client.NewClient(msplapiUrl, "")
+
+		cr, res, err := clt.Login(cmd.Arg("token"), cmd.Arg("provider"))
 		if err != nil {
 			log.Fatal(err)
 			return err
 		}
 
+		s, err := NewSimpleCredentialStore()
+		if err != nil {
+			return err
+		}
+
+		u := cr.Data.(api.LoginResp)
+
+		err = s.SaveUserCreds(&UserCreds{
+			Token: u.AccessToken,
+		})
+		if err != nil {
+			return err
+		}
+
 		outputResponse(cr, res)
+
+		return nil
+	},
+)
+
+var logout = cmd.NewCommand("logout", "Auth", "Logout from msplapi",
+	func(cmd *cmd.Command) {},
+
+	func(cmd *cmd.Command) error {
+		s, err := NewSimpleCredentialStore()
+		if err != nil {
+			return err
+		}
+
+		err = s.ClearUserCreds()
+		if err != nil {
+			return err
+		}
 
 		return nil
 	},
