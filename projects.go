@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/chrismrivera/cmd"
 	"github.com/mikec/msplapi/client"
@@ -9,6 +9,7 @@ import (
 
 func init() {
 	cmdr.AddCommand(addProject)
+	cmdr.AddCommand(getProviderProjects)
 }
 
 var addProject = NewAuthCommand(
@@ -16,23 +17,41 @@ var addProject = NewAuthCommand(
 	"add-project", "Projects", "Add a new project",
 
 	func(cmd *cmd.Command) {
-		cmd.AppendArg("project-name", `Name of the project to add. 
-																		Must match the name of the project on the 
-																		given provider`)
+		cmd.AppendArg("project-handle", `A handle that uniquely identifies the project`)
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
 
 	func(cmd *cmd.Command, clt *client.Client) error {
 
-		/*cr, res, err := clt.Login(cmd.Arg("project-name"), cmd.Arg("provider"))
+		cr, res, err := clt.AddProject(cmd.Arg("project-handle"), cmd.Arg("provider"))
 		if err != nil {
 			log.Fatal(err)
 			return err
 		}
 
-		outputResponse(cr, res)*/
+		outputResponse(cr, res)
 
-		fmt.Println("TOKEN:", clt.Context.AccessToken)
+		return nil
+	},
+)
+
+var getProviderProjects = NewAuthCommand(
+
+	"get-provider-projects", "Projects", "Gets all projects that the authenticated user owns on a given provider",
+
+	func(cmd *cmd.Command) {
+		cmd.AppendArg("provider", "Project source provider (github, dropbox, ...)")
+	},
+
+	func(cmd *cmd.Command, clt *client.Client) error {
+
+		cr, res, err := clt.GetProviderProjects(cmd.Arg("provider"))
+		if err != nil {
+			log.Fatal(err)
+			return err
+		}
+
+		outputResponse(cr, res)
 
 		return nil
 	},

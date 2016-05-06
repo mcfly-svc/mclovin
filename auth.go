@@ -36,7 +36,7 @@ var login = cmd.NewCommand(
 			return err
 		}
 
-		u := cr.Data.(api.LoginResp)
+		u := cr.Data.(*api.LoginResp)
 
 		err = s.SaveUserCreds(&UserCreds{
 			Token: u.AccessToken,
