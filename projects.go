@@ -11,6 +11,7 @@ func init() {
 	cmdr.AddCommand(addProject)
 	cmdr.AddCommand(getProviderProjects)
 	cmdr.AddCommand(getProjects)
+	cmdr.AddCommand(deleteProject)
 }
 
 var addProject = NewAuthCommand(
@@ -67,6 +68,29 @@ var getProjects = NewAuthCommand(
 	func(cmd *cmd.Command, clt *client.Client) error {
 
 		cr, res, err := clt.GetProjects()
+		if err != nil {
+			log.Fatal(err)
+			return err
+		}
+
+		outputResponse(cr, res)
+
+		return nil
+	},
+)
+
+var deleteProject = NewAuthCommand(
+
+	"delete-project", "Projects", "Deletes a project",
+
+	func(cmd *cmd.Command) {
+		cmd.AppendArg("project-handle", `A handle that uniquely identifies the project`)
+		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
+	},
+
+	func(cmd *cmd.Command, clt *client.Client) error {
+
+		cr, res, err := clt.DeleteProject(cmd.Arg("project-handle"), cmd.Arg("provider"))
 		if err != nil {
 			log.Fatal(err)
 			return err
