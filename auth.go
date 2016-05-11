@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/chrismrivera/cmd"
 	"github.com/mikec/msplapi/api"
 	"github.com/mikec/msplapi/client"
@@ -26,10 +24,6 @@ var login = cmd.NewCommand(
 		clt := client.NewClient(msplapiUrl, "")
 
 		cr, res, err := clt.Login(cmd.Arg("token"), cmd.Arg("provider"))
-		if err != nil {
-			log.Fatal(err)
-			return err
-		}
 
 		s, err := NewSimpleCredentialStore()
 		if err != nil {
@@ -45,9 +39,7 @@ var login = cmd.NewCommand(
 			return err
 		}
 
-		outputResponse(cr, res)
-
-		return nil
+		return handleClientResponse(cr, res, err)
 	},
 )
 

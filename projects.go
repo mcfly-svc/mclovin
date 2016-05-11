@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/chrismrivera/cmd"
 	"github.com/mikec/msplapi/client"
 )
@@ -24,16 +22,8 @@ var addProject = NewAuthCommand(
 	},
 
 	func(cmd *cmd.Command, clt *client.Client) error {
-
 		cr, res, err := clt.AddProject(cmd.Arg("project-handle"), cmd.Arg("provider"))
-		if err != nil {
-			log.Fatal(err)
-			return err
-		}
-
-		outputResponse(cr, res)
-
-		return nil
+		return handleClientResponse(cr, res, err)
 	},
 )
 
@@ -46,16 +36,8 @@ var getProviderProjects = NewAuthCommand(
 	},
 
 	func(cmd *cmd.Command, clt *client.Client) error {
-
 		cr, res, err := clt.GetProviderProjects(cmd.Arg("provider"))
-		if err != nil {
-			log.Fatal(err)
-			return err
-		}
-
-		outputResponse(cr, res)
-
-		return nil
+		return handleClientResponse(cr, res, err)
 	},
 )
 
@@ -66,16 +48,8 @@ var getProjects = NewAuthCommand(
 	func(cmd *cmd.Command) {},
 
 	func(cmd *cmd.Command, clt *client.Client) error {
-
 		cr, res, err := clt.GetProjects()
-		if err != nil {
-			log.Fatal(err)
-			return err
-		}
-
-		outputResponse(cr, res)
-
-		return nil
+		return handleClientResponse(cr, res, err)
 	},
 )
 
@@ -89,15 +63,7 @@ var deleteProject = NewAuthCommand(
 	},
 
 	func(cmd *cmd.Command, clt *client.Client) error {
-
 		cr, res, err := clt.DeleteProject(cmd.Arg("project-handle"), cmd.Arg("provider"))
-		if err != nil {
-			log.Fatal(err)
-			return err
-		}
-
-		outputResponse(cr, res)
-
-		return nil
+		return handleClientResponse(cr, res, err)
 	},
 )

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 
@@ -69,6 +70,15 @@ func NewAuthCommand(name, group, desc string, setup cmd.SetupFunc, run AuthComma
 	}
 
 	return cmd.NewCommand(name, group, desc, wrappingSetup, wrappingRun)
+}
+
+func handleClientResponse(cr *client.ClientResponse, res *http.Response, err error) error {
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+	outputResponse(cr, res)
+	return nil
 }
 
 func outputResponse(cr *client.ClientResponse, res *http.Response) {
