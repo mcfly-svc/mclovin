@@ -12,18 +12,24 @@ import (
 
 	"github.com/chrismrivera/cmd"
 	"github.com/mikec/msplapi/client"
+	"github.com/mikec/msplapi/config"
 )
 
 var cmdr *cmd.App = cmd.NewApp()
-var msplapiUrl = "http://localhost:8081"
+var cfg *config.Config
 
 type AuthCommandRunFunc func(cmd *cmd.Command, ac *client.Client) error
 
 var ErrNoCredentials = errors.New("Please login first.")
 
 func main() {
+	_cfg, err := config.NewConfigFromEnvironment()
+	if err != nil {
+		log.Fatal(err)
+	}
+	cfg = _cfg
 	cmdr.Description = "A command line client for the marsupi API"
-	if err := cmdr.Run(os.Args); err != nil {
+	if err = cmdr.Run(os.Args); err != nil {
 		if ue, ok := err.(*cmd.UsageErr); ok {
 			ue.ShowUsage()
 		} else {
@@ -64,7 +70,7 @@ func NewAuthCommand(name, group, desc string, setup cmd.SetupFunc, run AuthComma
 			u.Token = overrideToken
 		}
 
-		clt := client.NewClient(msplapiUrl, u.Token)
+		clt := client.NewClient(cfg.ApiUrl, u.Token)
 
 		return run(cmd, clt)
 	}

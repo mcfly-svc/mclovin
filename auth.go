@@ -21,7 +21,7 @@ var login = cmd.NewCommand(
 	},
 
 	func(cmd *cmd.Command) error {
-		clt := client.NewClient(msplapiUrl, "")
+		clt := client.NewClient(cfg.ApiUrl, "")
 
 		cr, res, err := clt.Login(cmd.Arg("token"), cmd.Arg("provider"))
 
