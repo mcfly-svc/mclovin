@@ -81,17 +81,15 @@ func NewAuthCommand(name, group, desc string, setup cmd.SetupFunc, run AuthComma
 func handleClientResponse(cr *client.ClientResponse, res *http.Response, err error) error {
 	if err != nil {
 		log.Fatal(err)
-		return err
 	}
-	outputResponse(cr, res)
-	return nil
+	return outputResponse(cr, res)
 }
 
-func outputResponse(cr *client.ClientResponse, res *http.Response) {
+func outputResponse(cr *client.ClientResponse, res *http.Response) error {
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err.Error())
-		os.Exit(1)
+		panic(err)
+		return err
 	}
 
 	fmt.Println()
@@ -101,4 +99,5 @@ func outputResponse(cr *client.ClientResponse, res *http.Response) {
 	}
 	fmt.Printf("Body:                %s\n", string(body))
 	fmt.Println()
+	return nil
 }
