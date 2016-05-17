@@ -1,5 +1,3 @@
-// ADD COMMANDS FOR USER
-
 package main
 
 import (
