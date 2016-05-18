@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/chrismrivera/cmd"
+	"github.com/mikec/msplapi/api/apidata"
 	"github.com/mikec/msplapi/client"
 )
 
@@ -19,7 +20,10 @@ var addProject = NewAuthCommand(
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
 	func(cmd *cmd.Command, clt *client.Client) error {
-		cr, res, err := clt.AddProject(cmd.Arg("project-handle"), cmd.Arg("provider"))
+		cr, res, err := clt.AddProject(&apidata.ProjectReq{
+			Handle:   cmd.Arg("project-handle"),
+			Provider: cmd.Arg("provider"),
+		})
 		return handleClientResponse(cr, res, err)
 	},
 )
@@ -49,6 +53,9 @@ var deleteProject = NewAuthCommand(
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
 	func(cmd *cmd.Command, clt *client.Client) error {
-		return handleClientResponse(clt.DeleteProject(cmd.Arg("project-handle"), cmd.Arg("provider")))
+		return handleClientResponse(clt.DeleteProject(&apidata.ProjectReq{
+			Handle:   cmd.Arg("project-handle"),
+			Provider: cmd.Arg("provider"),
+		}))
 	},
 )

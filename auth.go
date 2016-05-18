@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/chrismrivera/cmd"
-	"github.com/mikec/msplapi/api"
+	"github.com/mikec/msplapi/api/apidata"
 	"github.com/mikec/msplapi/client"
 )
 
@@ -20,7 +20,10 @@ var login = cmd.NewCommand(
 	func(cmd *cmd.Command) error {
 		clt := client.NewClient(cfg.ApiUrl, "")
 
-		cr, res, err := clt.Login(cmd.Arg("token"), cmd.Arg("provider"))
+		cr, res, err := clt.Login(&apidata.LoginReq{
+			Token:    cmd.Arg("token"),
+			Provider: cmd.Arg("provider"),
+		})
 		if err != nil {
 			panic(err)
 			return err
@@ -32,7 +35,7 @@ var login = cmd.NewCommand(
 			return err
 		}
 
-		u := cr.Data.(*api.LoginResp)
+		u := cr.Data.(*apidata.LoginResp)
 
 		err = s.SaveUserCreds(&UserCreds{
 			Token: u.AccessToken,

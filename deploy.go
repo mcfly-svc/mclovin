@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/chrismrivera/cmd"
+	"github.com/mikec/msplapi/api/apidata"
 	"github.com/mikec/msplapi/client"
 )
 
@@ -17,10 +18,10 @@ var deploy = NewAuthCommand(
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
 	func(cmd *cmd.Command, clt *client.Client) error {
-		return handleClientResponse(clt.Deploy(
-			cmd.Arg("build-handle"),
-			cmd.Arg("project-handle"),
-			cmd.Arg("provider"),
-		))
+		return handleClientResponse(clt.Deploy(&apidata.DeployReq{
+			BuildHandle:         cmd.Arg("build-handle"),
+			SourceProjectHandle: cmd.Arg("project-handle"),
+			Provider:            cmd.Arg("provider"),
+		}))
 	},
 )
