@@ -17,7 +17,7 @@ var deploy = NewAuthCommand(
 		cmd.AppendArg("project-handle", `A handle that uniquely identifies the project`)
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
-	func(cmd *cmd.Command, clt *client.Client) error {
+	func(cmd *cmd.Command, clt client.Client) error {
 		return handleClientResponse(clt.Deploy(&apidata.DeployReq{
 			BuildHandle:         cmd.Arg("build-handle"),
 			SourceProjectHandle: cmd.Arg("project-handle"),

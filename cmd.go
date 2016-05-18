@@ -16,7 +16,7 @@ import (
 var cmdr *cmd.App = cmd.NewApp()
 var cfg *config.Config
 
-type AuthCommandRunFunc func(cmd *cmd.Command, ac *client.Client) error
+type AuthCommandRunFunc func(cmd *cmd.Command, ac client.Client) error
 
 var ErrNoCredentials = errors.New("Please login first.")
 
@@ -68,7 +68,7 @@ func NewAuthCommand(name, group, desc string, setup cmd.SetupFunc, run AuthComma
 			u.Token = overrideToken
 		}
 
-		clt := client.NewClient(cfg.ApiUrl, u.Token)
+		clt := client.NewMsplClient(cfg.ApiUrl, u.Token)
 
 		return run(cmd, clt)
 	}

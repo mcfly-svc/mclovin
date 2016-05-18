@@ -18,7 +18,7 @@ var login = cmd.NewCommand(
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
 	func(cmd *cmd.Command) error {
-		clt := client.NewClient(cfg.ApiUrl, "")
+		clt := client.NewMsplClient(cfg.ApiUrl, "")
 
 		cr, res, err := clt.Login(&apidata.LoginReq{
 			Token:    cmd.Arg("token"),

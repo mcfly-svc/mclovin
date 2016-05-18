@@ -19,7 +19,7 @@ var addProject = NewAuthCommand(
 		cmd.AppendArg("project-handle", `A handle that uniquely identifies the project`)
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
-	func(cmd *cmd.Command, clt *client.Client) error {
+	func(cmd *cmd.Command, clt client.Client) error {
 		cr, res, err := clt.AddProject(&apidata.ProjectReq{
 			Handle:   cmd.Arg("project-handle"),
 			Provider: cmd.Arg("provider"),
@@ -33,7 +33,7 @@ var getProviderProjects = NewAuthCommand(
 	func(cmd *cmd.Command) {
 		cmd.AppendArg("provider", "Project source provider (github, dropbox, ...)")
 	},
-	func(cmd *cmd.Command, clt *client.Client) error {
+	func(cmd *cmd.Command, clt client.Client) error {
 		return handleClientResponse(clt.GetProviderProjects(cmd.Arg("provider")))
 	},
 )
@@ -41,7 +41,7 @@ var getProviderProjects = NewAuthCommand(
 var getProjects = NewAuthCommand(
 	"get-projects", "Projects", "Gets all projects that the authenticated user has added to marsupi",
 	func(cmd *cmd.Command) {},
-	func(cmd *cmd.Command, clt *client.Client) error {
+	func(cmd *cmd.Command, clt client.Client) error {
 		return handleClientResponse(clt.GetProjects())
 	},
 )
@@ -52,7 +52,7 @@ var deleteProject = NewAuthCommand(
 		cmd.AppendArg("project-handle", `A handle that uniquely identifies the project`)
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
-	func(cmd *cmd.Command, clt *client.Client) error {
+	func(cmd *cmd.Command, clt client.Client) error {
 		return handleClientResponse(clt.DeleteProject(&apidata.ProjectReq{
 			Handle:   cmd.Arg("project-handle"),
 			Provider: cmd.Arg("provider"),
