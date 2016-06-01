@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/chrismrivera/cmd"
-	"github.com/mikec/msplapi/api/apidata"
-	"github.com/mikec/msplapi/client"
+	"github.com/mcfly-svc/mcfly/api/apidata"
+	"github.com/mcfly-svc/mcfly/client"
 )
 
 func init() {
@@ -18,7 +18,7 @@ var login = cmd.NewCommand(
 		cmd.AppendArg("provider", "Provider (github, dropbox, ...)")
 	},
 	func(cmd *cmd.Command) error {
-		clt := client.NewMsplClient(cfg.ApiUrl, "")
+		clt := client.NewMcflyClient(cfg.ApiUrl, "")
 
 		cr, res, err := clt.Login(&apidata.LoginReq{
 			Token:    cmd.Arg("token"),
@@ -50,7 +50,7 @@ var login = cmd.NewCommand(
 )
 
 var logout = cmd.NewCommand(
-	"logout", "Auth", "Logout from msplapi",
+	"logout", "Auth", "Logout from mcflyapi",
 	func(cmd *cmd.Command) {},
 	func(cmd *cmd.Command) error {
 		s, err := NewSimpleCredentialStore()

@@ -1,4 +1,4 @@
 mclovin
 -------
 
-Command line utility for [marsupial-api](https://github.com/mikec/marsupial-api)
+Command line utility for [mcfly](https://github.com/mcfly-svc/mcfly)

@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/chrismrivera/cmd"
-	"github.com/mikec/msplapi/api/apidata"
-	"github.com/mikec/msplapi/client"
+	"github.com/mcfly-svc/mcfly/api/apidata"
+	"github.com/mcfly-svc/mcfly/client"
 )
 
 func init() {

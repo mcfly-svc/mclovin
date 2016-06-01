@@ -9,8 +9,8 @@ import (
 	"os"
 
 	"github.com/chrismrivera/cmd"
-	"github.com/mikec/msplapi/client"
-	"github.com/mikec/msplapi/config"
+	"github.com/mcfly-svc/mcfly/client"
+	"github.com/mcfly-svc/mcfly/config"
 )
 
 var cmdr *cmd.App = cmd.NewApp()
@@ -26,7 +26,7 @@ func main() {
 		log.Fatal(err)
 	}
 	cfg = _cfg
-	cmdr.Description = "A command line client for the marsupi API"
+	cmdr.Description = "A command line client for McFly"
 	if err = cmdr.Run(os.Args); err != nil {
 		if ue, ok := err.(*cmd.UsageErr); ok {
 			ue.ShowUsage()
@@ -68,7 +68,7 @@ func NewAuthCommand(name, group, desc string, setup cmd.SetupFunc, run AuthComma
 			u.Token = overrideToken
 		}
 
-		clt := client.NewMsplClient(cfg.ApiUrl, u.Token)
+		clt := client.NewMcflyClient(cfg.ApiUrl, u.Token)
 
 		return run(cmd, clt)
 	}

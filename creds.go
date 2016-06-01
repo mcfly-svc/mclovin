@@ -25,7 +25,7 @@ type SimpleCredentialStore struct {
 	configPath string
 }
 
-type msplConfigFile struct {
+type mcflyConfigFile struct {
 	UserCreds *UserCreds `toml:"user"`
 }
 
@@ -41,7 +41,7 @@ func NewSimpleCredentialStore() (CredentialStore, error) {
 		return nil, err
 	}
 
-	configPath := path.Join(dirPath, "mspl.toml")
+	configPath := path.Join(dirPath, "mcfly.toml")
 
 	s := &SimpleCredentialStore{
 		configPath: configPath,
@@ -51,7 +51,7 @@ func NewSimpleCredentialStore() (CredentialStore, error) {
 }
 
 func (s *SimpleCredentialStore) GetUserCreds() (*UserCreds, error) {
-	var f msplConfigFile
+	var f mcflyConfigFile
 
 	if _, err := toml.DecodeFile(s.configPath, &f); err != nil {
 		if os.IsNotExist(err) {
@@ -66,7 +66,7 @@ func (s *SimpleCredentialStore) GetUserCreds() (*UserCreds, error) {
 }
 
 func (s *SimpleCredentialStore) SaveUserCreds(u *UserCreds) error {
-	cf := msplConfigFile{
+	cf := mcflyConfigFile{
 		UserCreds: u,
 	}
 

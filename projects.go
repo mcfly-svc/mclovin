@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/chrismrivera/cmd"
-	"github.com/mikec/msplapi/api/apidata"
-	"github.com/mikec/msplapi/client"
+	"github.com/mcfly-svc/mcfly/api/apidata"
+	"github.com/mcfly-svc/mcfly/client"
 )
 
 func init() {
@@ -39,7 +39,7 @@ var getProviderProjects = NewAuthCommand(
 )
 
 var getProjects = NewAuthCommand(
-	"get-projects", "Projects", "Gets all projects that the authenticated user has added to marsupi",
+	"get-projects", "Projects", "Gets all projects that the authenticated user has added to mcfly",
 	func(cmd *cmd.Command) {},
 	func(cmd *cmd.Command, clt client.Client) error {
 		return handleClientResponse(clt.GetProjects())
